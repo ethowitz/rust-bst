@@ -8,24 +8,24 @@ struct Node<T> {
     right: Option<Box<Node<T>>>,
 }
 
-/* TODO: trying to enable printing for when T = String, but not compiling...
+/*
 impl fmt::Display for Node<String> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{{{}, {}}}", self.key, self.value)
-    }
-}
-
-impl<String> Node<String> {
-    fn in_order(&self) {
-        if let &Some(ref node) = &self.left { node.in_order() };
-        print!("{{{} {}}} ", self.key, &self.value);
-        if let &Some(ref node) = &self.right { node.in_order() };
+        write!(f, "{{{}, {}}}", self.key, &self.value)
     }
 }
 */
 
-// TODO: apparently this recursion is not idiomatic?
+impl<T: fmt::Display> Node<T> {
+    fn in_order(&self) {
+        if let Some(ref node) = self.left { node.in_order() };
+        println!("{{key: {}, value: {}}}", self.key, self.value);
+        if let Some(ref node) = self.right { node.in_order() };
+    }
+}
+
 impl<T> Node<T> {
+    // TODO: apparently this recursion is not idiomatic?
     fn insert(&mut self, key: i32, val: T) {
         let target = if key > self.key { &mut self.right } else { &mut self.left };
         match *target {
@@ -38,7 +38,6 @@ impl<T> Node<T> {
     // fn delete(&mut self, val: i32) {
     //
     // }
-
 
     fn compute_height(&self) -> u32 {
         let left_height =
@@ -57,11 +56,13 @@ impl<T> Node<T> {
 
 fn main() {
     // TODO: this is obviously clunky and exposes structure of tree/map and nodes
-    let root = Box::new(Node::<String> { key: 5, value: "Ethan".to_string(), left: None, right: None });
-    // root.insert(1);
-    // root.insert(19);
-    // root.insert(7);
-    // root.insert(15);
-    println!("{}", root.compute_height());
-    // root.in_order();
+    let mut root = Box::new(Node::<i32> { key: 5, value: 5, left: None, right: None });
+    // TODO: add code to randomly generate nodes
+    root.insert(2, 2);
+    root.insert(9, 9);
+    root.insert(-1, -1);
+    root.insert(12, 12);
+    root.insert(11, 11);
+    root.insert(-5, -5);
+    root.in_order();
 }
