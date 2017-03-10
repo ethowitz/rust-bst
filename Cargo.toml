@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["Ethan Donowitz <ethan.donowitz@posteo.org>"]
 
 [dependencies]
+odds = "0.2.25"
